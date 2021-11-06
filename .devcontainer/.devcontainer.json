@@ -1,5 +1,8 @@
 {
 	"name": "Codespaces Go Template Repository",
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
     "extensions": [
         "coenraads.bracket-pair-colorizer-2",
         "eamodio.gitlens",
@@ -9,6 +12,5 @@
         "vscode-icons-team.vscode-icons",
         "visualstudioexptteam.vscodeintellicode",
         "ms-vscode.go"
-    ],
-    "dockerFile": "Dockerfile"
+    ]
 }
