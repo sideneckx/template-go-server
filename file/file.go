@@ -10,5 +10,6 @@ func NewFile() File {
 	file := File{
 		Extension: "txt",
 	}
+	//weo weo
 	return file
 }
