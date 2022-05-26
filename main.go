@@ -1,36 +1,28 @@
 package main
 
 import (
-	"github.com/kataras/iris/v12"
-	"github.com/sideneckx/template-go-server/json_type"
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
+	"github.com/sideneckx/template-go-server/api_route/user_route"
 )
 
-// type JSONExample struct {
-// 	body string
-// }
-
-// func main() {
-// 	reps, err := http.Get("https://jsonplaceholder.typicode.com/posts")
-// 	if err != nil {
-// 		fmt.Println(err)
-// 	}
-// 	defer reps.Body.Close()
-// 	var jsonBody *[]map[string]interface{} = &[]map[string]interface{}{}
-// 	json.NewDecoder(reps.Body).Decode(jsonBody)
-// 	fmt.Println((*jsonBody)[0])
-// }
-
 func main() {
-	app := iris.New()
-	app.Handle("GET", "/home", func(ctx iris.Context) {
-		ctx.JSON([]json_type.RawJson{
-			{
-				"message": "1",
-			},
-			{
-				"message": "ahuhuhu",
-			},
-		})
+	router := gin.Default()
+
+	corsConfig := cors.DefaultConfig()
+	corsConfig.AllowAllOrigins = true
+	corsConfig.AllowCredentials = true
+	corsConfig.AddAllowHeaders("Secret-code")
+	router.Use(cors.New(corsConfig))
+
+	//middleware
+	// router.Use(api_middleware.AuthorizeMiddleWare())
+
+	router.GET("/", func(c *gin.Context) {
+		c.JSON(200, gin.H{"message": "template server"})
 	})
-	app.Listen(":8080")
+
+	user_route.NewRoute(*router)
+	server := "0.0.0.0:" + "8080"
+	router.Run(server)
 }
