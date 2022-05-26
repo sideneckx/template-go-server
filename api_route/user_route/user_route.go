@@ -3,17 +3,19 @@ package user_route
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/sideneckx/template-go-server/api_model"
+	"github.com/sideneckx/template-go-server/auth/auth_middleware"
 	"github.com/sideneckx/template-go-server/model"
 )
 
-var buildRoute *gin.RouterGroup = nil
+var userRoute *gin.RouterGroup = nil
 
 func NewRoute(engine gin.Engine) {
-	buildRoute = engine.Group("/api/user")
+	userRoute = engine.Group("/api/user")
 
-	buildRoute.GET("", get)
-	buildRoute.POST("/", create)
-	buildRoute.GET("/:id", getId)
+	userRoute.GET("", get)
+	userRoute.POST("/", create)
+	userRoute.GET("/require-token", auth_middleware.AuthorizeMiddleWare(), requiredSignedIn)
+	userRoute.GET("/:id", getId)
 }
 
 func get(c *gin.Context) {
@@ -52,4 +54,9 @@ func getId(c *gin.Context) {
 		return
 	}
 	c.JSON(400, api_model.NewErrorAPIRes("id not found", api_model.RequestFail))
+}
+
+func requiredSignedIn(c *gin.Context) {
+	msg := "Passed the middleware"
+	c.JSON(200, api_model.NewSuccessAPIRes(&msg))
 }

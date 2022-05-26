@@ -12,7 +12,7 @@ func main() {
 	corsConfig := cors.DefaultConfig()
 	corsConfig.AllowAllOrigins = true
 	corsConfig.AllowCredentials = true
-	corsConfig.AddAllowHeaders("Secret-code")
+	corsConfig.AddAllowHeaders("Token")
 	router.Use(cors.New(corsConfig))
 
 	//middleware
